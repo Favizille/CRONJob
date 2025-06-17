@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Facades\PositionFacade;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class ExpireStalePositions extends Command
 {
@@ -11,20 +13,23 @@ class ExpireStalePositions extends Command
      *
      * @var string
      */
-    protected $signature = 'app:expire-stale-positions';
+    protected $signature = 'positions:expire-stale-positions';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Expires positions that are still pending after 7 days';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        //
+        $expiredCount = PositionFacade::expireStale();
+        $this->info("Expired {$expiredCount} stale position(s).");
+        Log::info("Expired {$expiredCount} stale position(s) via scheduler.");
+        return Command::SUCCESS;
     }
 }
