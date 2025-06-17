@@ -9,4 +9,8 @@ class PositionFacade extends Facade
     {
         return 'position-service';
     }
+
+    public static function expireStale(){
+        return app('position-service')->expireStale();
+    }
 }
